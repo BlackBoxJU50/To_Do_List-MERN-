@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Create from "./Create";
+import Create from "../components/Create";
 import { BsFillCheckCircleFill, BsCircleFill, BsFillTrashFill, BsPencilSquare, BsCheckLg, BsXLg } from 'react-icons/bs';
 
 function Home() {
@@ -23,13 +23,13 @@ function Home() {
 
     const fetchTodos = () => {
         const email = localStorage.getItem("email");
-        axios.get('http://localhost:3000/get/' + email)
+        axios.get('/get/' + email)
             .then(result => setTodos(result.data))
             .catch(err => console.log(err))
     }
 
     const handleEditStatus = (id) => {
-        axios.put('http://localhost:3000/update/' + id)
+        axios.put('/update/' + id)
             .then(result => {
                 fetchTodos();
             })
@@ -37,7 +37,7 @@ function Home() {
     }
 
     const handleDelete = (id) => {
-        axios.delete('http://localhost:3000/delete/' + id)
+        axios.delete('/delete/' + id)
             .then(result => {
                 fetchTodos();
             })
@@ -51,7 +51,7 @@ function Home() {
 
     const handleSave = (id) => {
         if (!editText) return;
-        axios.put('http://localhost:3000/edit/' + id, { task: editText })
+        axios.put('/edit/' + id, { task: editText })
             .then(result => {
                 setEditId(-1);
                 fetchTodos();

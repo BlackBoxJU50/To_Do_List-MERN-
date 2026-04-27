@@ -12,7 +12,7 @@ function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:3000/register", { name, email, password })
+    axios.post("/register", { name, email, password })
       .then(result => {
         console.log(result);
         navigate('/login');
@@ -33,7 +33,7 @@ function Signup() {
               type="text"
               className="form-control bg-light border-0"
               id="name"
-              placeholder="John Doe"
+              placeholder="Md Hasib"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required

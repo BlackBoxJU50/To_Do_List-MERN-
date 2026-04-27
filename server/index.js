@@ -1,79 +1,33 @@
+require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
-const EmployeeModel = require("./models/Employee");
+const path = require("path");
+const connectDB = require("./config/db");
+const todoRoutes = require("./routes/todoRoutes");
+const userRoutes = require("./routes/userRoutes");
+
 const app = express();
-const TodoModel = require("./models/Todo");
+app.use(express.json());
+app.use(cors());
 
-app.use(express.json())
-app.use(cors())
+// MongoDB Connection
+connectDB();
 
-mongoose.connect("mongodb+srv://ahmedhasib2224_db_user2:DDITvJNbLKmb6mgV@cluster0.pchryyh.mongodb.net/employee?appName=Cluster0", {
-    tlsAllowInvalidCertificates: true
-})
+// API Routes
+app.use("/", todoRoutes);
+app.use("/", userRoutes);
 
-app.post('/add', (req, res) => {
-    const { task, email } = req.body;
-    TodoModel.create({ task: task, email: email })
-        .then(result => res.json(result))
-        .catch(err => res.json(err))
-})
+// Serve static files from the React app
+const clientPath = path.join(__dirname, "..", "client", "dist");
+app.use(express.static(clientPath));
 
-app.get('/get/:email', (req, res) => {
-    const { email } = req.params;
-    TodoModel.find({ email: email })
-        .then(result => res.json(result))
-        .catch(err => res.json(err))
-})
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get(/^(?!\/api).+/, (req, res) => {
+    res.sendFile(path.join(clientPath, "index.html"));
+});
 
-app.put('/update/:id', (req, res) => {
-    const { id } = req.params;
-    TodoModel.findByIdAndUpdate({ _id: id }, { done: true })
-        .then(result => res.json(result))
-        .catch(err => res.json(err))
-})
-
-app.delete('/delete/:id', (req, res) => {
-    const { id } = req.params;
-    TodoModel.findByIdAndDelete({ _id: id })
-        .then(result => res.json(result))
-        .catch(err => res.json(err))
-})
-
-app.put('/edit/:id', (req, res) => {
-    const { id } = req.params;
-    const { task } = req.body;
-    TodoModel.findByIdAndUpdate({ _id: id }, { task: task })
-        .then(result => res.json(result))
-        .catch(err => res.json(err))
-})
-
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
-    EmployeeModel.findOne({ email: email })
-        .then(user => {
-            if (user) {
-                if (user.password == password) {
-                    res.json({ status: "Success", name: user.name })
-                }
-                else {
-                    res.json("Password not match")
-                }
-            }
-            else {
-                res.json("User not found")
-            }
-        })
-})
-
-app.post('/register', (req, res) => {
-    EmployeeModel.create(req.body)
-        .then(result => res.json(result))
-        .catch(err => res.json(err))
-
-
-})
-
-app.listen(3000, () => {
-    console.log("server is running on port 3000")
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
 })

@@ -1,0 +1,15 @@
+{
+  "name": "todo-list-mern",
+  "version": "1.0.0",
+  "description": "Full stack MERN To-Do List application",
+  "main": "server/index.js",
+  "scripts": {
+    "install-client": "cd client && npm install",
+    "install-server": "cd server && npm install",
+    "build": "npm run install-client && npm run install-server && cd client && npm run build",
+    "start": "cd server && node index.js",
+    "dev": "npm run build && npm start"
+  },
+  "author": "",
+  "license": "ISC"
+}

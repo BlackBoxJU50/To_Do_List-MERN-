@@ -7,7 +7,7 @@ function Create() {
     const handleAdd = () => {
         if (!task) return;
         const email = localStorage.getItem("email");
-        axios.post("http://localhost:3000/add", { task: task, email: email })
+        axios.post("/add", { task: task, email: email })
             .then(result => {
                 location.reload();
             })

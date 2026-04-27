@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Signup from './Signup';
 
 import { useNavigate } from 'react-router-dom';
 function Login({ onLoginSuccess }) {
@@ -8,7 +10,7 @@ function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:3000/login", { email, password })
+    axios.post("/login", { email, password })
       .then(result => {
         console.log(result)
         if (result.data.status === "Success") {
@@ -25,7 +27,7 @@ function Login({ onLoginSuccess }) {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="card shadow-lg p-4 border-0" style={{ width: '400px', borderRadius: '15px' }}>
-        <h1 className="text-center mb-4 fw-bold" style={{ color: '#4a4a4a' }}>My To Do List</h1>
+        <h1 className="text-center mb-4 fw-bold" style={{ color: '#0056b3' }}>My To Do List</h1>
         <h2 className="text-center mb-4 fw-bold" style={{ color: '#4a4a4a' }}>Sign In</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -61,9 +63,9 @@ function Login({ onLoginSuccess }) {
           <div className="text-center text-muted mb-3 small">
             Don't have an account?
           </div>
-          <button type="button" className="btn btn-outline-secondary w-100 py-2 fw-bold" style={{ borderRadius: '10px' }}>
+          <Link to="/signup" type="button" className="btn btn-outline-secondary w-100 py-2 fw-bold" style={{ borderRadius: '10px' }}>
             Sign Up
-          </button>
+          </Link>
         </form>
       </div>
     </div>

@@ -62,9 +62,9 @@ function Home() {
     return (
         <div className="container mt-5 pb-5">
             <div className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
-                <h1 className="fw-bold text-primary">Task Dashboard</h1>
+                <h1 className="fw-bold text-primary">My To Do List</h1>
                 <div className="d-flex align-items-center gap-3">
-                    <span className="fw-semibold text-secondary text-uppercase small">User: {localStorage.getItem("name")}</span>
+                    <span className="fw-semibold text-secondary text-uppercase small"> {localStorage.getItem("name")}</span>
                     <button className="btn btn-outline-danger fw-bold shadow-sm" onClick={handleLogout} style={{ borderRadius: '10px' }}>
                         Logout
                     </button>

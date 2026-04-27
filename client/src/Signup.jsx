@@ -24,6 +24,7 @@ function Signup() {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="card shadow-lg p-4 border-0" style={{ width: '400px', borderRadius: '15px' }}>
+        <h1 className="text-center mb-4 fw-bold" style={{ color: '#0056b3' }}>My To Do List</h1>
         <h2 className="text-center mb-4 fw-bold" style={{ color: '#4a4a4a' }}>Create Account</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">

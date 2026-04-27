@@ -11,9 +11,10 @@ function Login({ onLoginSuccess }) {
     axios.post("http://localhost:3000/login", { email, password })
       .then(result => {
         console.log(result)
-        if (result.data === "Success") {
+        if (result.data.status === "Success") {
           localStorage.setItem("authenticated", "true");
           localStorage.setItem("email", email);
+          localStorage.setItem("name", result.data.name);
           onLoginSuccess();
           navigate('/home');
         }

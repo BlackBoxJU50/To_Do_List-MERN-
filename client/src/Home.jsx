@@ -13,6 +13,7 @@ function Home() {
     const handleLogout = () => {
         localStorage.removeItem("authenticated");
         localStorage.removeItem("email");
+        localStorage.removeItem("name");
         window.location.reload();
     };
 
@@ -22,13 +23,13 @@ function Home() {
 
     const fetchTodos = () => {
         const email = localStorage.getItem("email");
-        axios.get('http://localhost:3000/get/'+email)
+        axios.get('http://localhost:3000/get/' + email)
             .then(result => setTodos(result.data))
             .catch(err => console.log(err))
     }
 
     const handleEditStatus = (id) => {
-        axios.put('http://localhost:3000/update/'+id)
+        axios.put('http://localhost:3000/update/' + id)
             .then(result => {
                 fetchTodos();
             })
@@ -36,7 +37,7 @@ function Home() {
     }
 
     const handleDelete = (id) => {
-        axios.delete('http://localhost:3000/delete/'+id)
+        axios.delete('http://localhost:3000/delete/' + id)
             .then(result => {
                 fetchTodos();
             })
@@ -50,7 +51,7 @@ function Home() {
 
     const handleSave = (id) => {
         if (!editText) return;
-        axios.put('http://localhost:3000/edit/'+id, { task: editText })
+        axios.put('http://localhost:3000/edit/' + id, { task: editText })
             .then(result => {
                 setEditId(-1);
                 fetchTodos();
@@ -61,10 +62,13 @@ function Home() {
     return (
         <div className="container mt-5 pb-5">
             <div className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
-                <h1 className="fw-bold text-primary">My To-Do List</h1>
-                <button className="btn btn-outline-danger fw-bold shadow-sm" onClick={handleLogout} style={{ borderRadius: '10px' }}>
-                    Logout
-                </button>
+                <h1 className="fw-bold text-primary">Task Dashboard</h1>
+                <div className="d-flex align-items-center gap-3">
+                    <span className="fw-semibold text-secondary text-uppercase small">User: {localStorage.getItem("name")}</span>
+                    <button className="btn btn-outline-danger fw-bold shadow-sm" onClick={handleLogout} style={{ borderRadius: '10px' }}>
+                        Logout
+                    </button>
+                </div>
             </div>
 
             <div className="row justify-content-center">
@@ -80,20 +84,20 @@ function Home() {
                             todos.map((todo) => (
                                 <div key={todo._id} className="card mb-3 shadow-sm border-0 bg-white hover-shadow transition">
                                     <div className="card-body p-3 d-flex align-items-center justify-content-between">
-                                        
+
                                         <div className="d-flex align-items-center flex-grow-1">
                                             <div onClick={() => handleEditStatus(todo._id)} style={{ cursor: 'pointer' }}>
-                                                {todo.done ? 
+                                                {todo.done ?
                                                     <BsFillCheckCircleFill className="text-success fs-4 me-3" /> :
                                                     <BsCircleFill className="text-secondary opacity-25 fs-4 me-3" />
                                                 }
                                             </div>
 
                                             {editId === todo._id ? (
-                                                <input 
-                                                    type="text" 
-                                                    className="form-control border-primary py-1" 
-                                                    value={editText} 
+                                                <input
+                                                    type="text"
+                                                    className="form-control border-primary py-1"
+                                                    value={editText}
                                                     onChange={(e) => setEditText(e.target.value)}
                                                     autoFocus
                                                 />

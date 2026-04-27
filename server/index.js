@@ -13,8 +13,8 @@ mongoose.connect("mongodb+srv://ahmedhasib2224_db_user2:DDITvJNbLKmb6mgV@cluster
 })
 
 app.post('/add', (req, res) => {
-    const { task, deadline, email } = req.body;
-    TodoModel.create({ task: task, deadline: deadline, email: email })
+    const { task, email } = req.body;
+    TodoModel.create({ task: task, email: email })
         .then(result => res.json(result))
         .catch(err => res.json(err))
 })
@@ -42,8 +42,8 @@ app.delete('/delete/:id', (req, res) => {
 
 app.put('/edit/:id', (req, res) => {
     const { id } = req.params;
-    const { task, deadline } = req.body;
-    TodoModel.findByIdAndUpdate({ _id: id }, { task: task, deadline: deadline })
+    const { task } = req.body;
+    TodoModel.findByIdAndUpdate({ _id: id }, { task: task })
         .then(result => res.json(result))
         .catch(err => res.json(err))
 })

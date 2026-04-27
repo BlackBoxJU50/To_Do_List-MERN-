@@ -9,7 +9,6 @@ function Home() {
     const [todos, setTodos] = useState([]);
     const [editId, setEditId] = useState(-1);
     const [editText, setEditText] = useState("");
-    const [editDate, setEditDate] = useState("");
 
     const handleLogout = () => {
         localStorage.removeItem("authenticated");
@@ -44,15 +43,14 @@ function Home() {
             .catch(err => console.log(err))
     }
 
-    const startEdit = (id, task, deadline) => {
+    const startEdit = (id, task) => {
         setEditId(id);
         setEditText(task);
-        setEditDate(deadline || "");
     }
 
     const handleSave = (id) => {
         if (!editText) return;
-        axios.put('http://localhost:3000/edit/'+id, { task: editText, deadline: editDate })
+        axios.put('http://localhost:3000/edit/'+id, { task: editText })
             .then(result => {
                 setEditId(-1);
                 fetchTodos();
@@ -76,7 +74,7 @@ function Home() {
                         {todos.length === 0 ? (
                             <div className="text-center py-5 bg-white rounded shadow-sm border border-dashed">
                                 <h3 className="text-muted">No Tasks Yet</h3>
-                                <p className="text-secondary">Type a task and set a deadline above!</p>
+                                <p className="text-secondary">Type a task above and click 'Add' to begin!</p>
                             </div>
                         ) : (
                             todos.map((todo) => (
@@ -92,33 +90,17 @@ function Home() {
                                             </div>
 
                                             {editId === todo._id ? (
-                                                <div className="d-flex flex-column gap-2 w-100">
-                                                    <input 
-                                                        type="text" 
-                                                        className="form-control border-primary py-1" 
-                                                        value={editText} 
-                                                        onChange={(e) => setEditText(e.target.value)}
-                                                        autoFocus
-                                                    />
-                                                    <input 
-                                                        type="date" 
-                                                        className="form-control py-1" 
-                                                        value={editDate} 
-                                                        onChange={(e) => setEditDate(e.target.value)}
-                                                    />
-                                                </div>
+                                                <input 
+                                                    type="text" 
+                                                    className="form-control border-primary py-1" 
+                                                    value={editText} 
+                                                    onChange={(e) => setEditText(e.target.value)}
+                                                    autoFocus
+                                                />
                                             ) : (
-                                                <div className="d-flex flex-column">
-                                                    <span className={`fs-5 ${todo.done ? "text-decoration-line-through text-muted" : ""}`}>
-                                                        {todo.task}
-                                                    </span>
-                                                    {todo.deadline && (
-                                                        <small className="text-muted">
-                                                            <i className="bi bi-calendar-event me-1"></i>
-                                                            Finish by: {todo.deadline}
-                                                        </small>
-                                                    )}
-                                                </div>
+                                                <span className={`fs-5 ${todo.done ? "text-decoration-line-through text-muted" : ""}`}>
+                                                    {todo.task}
+                                                </span>
                                             )}
                                         </div>
 
@@ -130,7 +112,7 @@ function Home() {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <BsPencilSquare className="text-primary fs-5 pointer" onClick={() => startEdit(todo._id, todo.task, todo.deadline)} />
+                                                    <BsPencilSquare className="text-primary fs-5 pointer" onClick={() => startEdit(todo._id, todo.task)} />
                                                     <BsFillTrashFill className="text-danger fs-5 pointer" onClick={() => handleDelete(todo._id)} />
                                                 </>
                                             )}

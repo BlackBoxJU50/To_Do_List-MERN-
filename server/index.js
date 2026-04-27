@@ -23,7 +23,7 @@ app.use(express.static(clientPath));
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get(/^(?!\/api).+/, (req, res) => {
+app.use((req, res) => {
     res.sendFile(path.join(clientPath, "index.html"));
 });
 
